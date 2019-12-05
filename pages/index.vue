@@ -83,10 +83,12 @@
     mounted() {
       console.log('app init, my quill insrance object is:', this.myQuillEditor)
       this.position = this.myQuillEditor.getBounds(0)
+      this.myQuillEditor.setContents([
+        {insert:"dwadadwad\naw\ndwa\nd\nwa\nd\nadwadadwad\naw\ndwa\nd\nwa\nd\na\ndwa\nd\nwad\na\nw\nd\na\ndaw\nd\nwada\ndwadadwad\naw\ndwa\nd\nwa\nd\na\ndwa\nd\nwad\na\nw\nd\na\ndaw\nd\nwada\ndwadadwad\naw\ndwa\nd\nwa\nd\na\ndwa\nd\nwad\na\nw\nd\na\ndaw\nd\nwada\ndwadadwad\naw\ndwa\nd\nwa\nd\na\ndwa\nd\nwad\na\nw\nd\na\ndaw\nd\nwada\ndwadadwad\naw\ndwa\nd\nwa\nd\na\ndwa\nd\nwad\na\nw\nd\na\ndaw\nd\nwada\ndwadadwad\naw\ndwa\nd\nwa\nd\na\ndwa\nd\nwad\na\nw\nd\na\ndaw\nd\ndwadadwad\naw\ndwa\nd\nwa\nd\na\ndwa\nd\nwad\na\nw\nd\na\ndaw\nd\nwada\nwada\n"}
+      ])
     },
     methods: {
       test(command){
-        console.log(this.caretIndex.index)
         this.myQuillEditor.insertEmbed(this.caretIndex.index, 'my-custom-tag', `$\{${command}\}`)
       },
       onEditorBlur(editor) {
@@ -116,16 +118,17 @@
       },
       onEditorChange(editor) {
         console.log('editor change!', editor)
-        this.caretIndex = editor.quill.getSelection()
+        const caretIndex = editor.quill.getSelection()
+        if(caretIndex !== null) {
+          this.caretIndex = caretIndex
+        }
         this.content = editor.html
         this.exportJson = editor.quill.getContents()
         this.position = editor.quill.getBounds(this.caretIndex.index)
-        console.log(editor.quill.getBounds(this.caretIndex.index))
-        console.log(this.position)
-        // this.$scrollTo(this.$refs.top, 100, {
-        //     container: "#preview-content",
-        //     offset: this.position.top
-        // })
+        this.$scrollTo(this.$refs.top, 100, {
+            container: "#preview-content",
+            offset: this.position.top
+        })
       },
       onEditorUpdate(editor) {
         console.log('editor update!', editor)
